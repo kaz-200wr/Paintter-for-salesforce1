@@ -1,0 +1,70 @@
+<apex:page showHeader="false" controller="PaintterListActionController" applyHtmlTag="false" applyBodyTag="false" docType="html-5.0">
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="apple-mobile-web-app-capable" content="yes" />  
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="viewport" content = "width = device-width, initial-scale = 1, user-scalable = no" />
+
+    <script type='text/javascript' src='/canvas/sdk/js/publisher.js'/> 
+    <style>
+        ul{
+            list-style-type: none;
+            /*height:728px;*/
+            background-color: #f0f1f2;
+            padding:0;
+            margin: 0;
+        }
+        ul li{
+            padding:10px 20px 10px 20px;
+            margin:4px 0 4px 0;
+            font-size: 14px;
+            background-color: white;
+            text-align: center;
+        }
+        ul li table{
+            width: 100%;
+        }
+        #create{
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <ul class="">
+            <li><div id="create" onclick="sforce.one.navigateToURL('/apex/Paintter?id={!$CurrentPage.parameters.id}', false)">New Canvas</div></li>
+            <apex:repeat value="{!plist}" var="p">    
+                <li class="" onclick="sforce.one.navigateToURL('/apex/Paintter?id={!p.ParentId__c}&hid={!p.id}', false)">
+                    <table>
+                        <tr>
+                            <td rowspan="2">{!p.Name}</td>
+                            <td>Last Modified Date</td>
+                            <td>
+                                <apex:outputtext value="{0, date, yyyy/MM/dd hh:mm}">
+                                    <apex:param value="{!p.LastModifiedDate}"></apex:param>
+                                </apex:outputtext>
+                            </td>
+                            <td rowspan="2">
+                                <apex:repeat value="{!p.Attachments}" var="att">
+                                    <image src="/servlet/servlet.FileDownload?file={!att.Id}"  width="128" height="96" alt="No Image" />
+                                </apex:repeat>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Created Date</td>
+                            <td>
+                                <apex:outputtext value="{0, date, yyyy/MM/dd hh:mm}">
+                                    <apex:param value="{!p.CreatedDate}"></apex:param>
+                                </apex:outputtext>
+                            </td>
+                        </tr>
+                    </table>
+                </li>
+             </apex:repeat>
+        </ul>
+    </div>
+</body>
+</html>
+</apex:page>

@@ -1,0 +1,15 @@
+<apex:page standardController="Paintter__c" sidebar="false" showheader="false" cache="false" docType="html-5.0"  standardStylesheets="false">
+<script>
+window.onload=function(){
+    var isSF1=typeof sforce === 'undefined' ? otherApp(): s1App(); 
+}
+
+var s1App = function(){
+    sforce.one.navigateToURL('/apex/Paintter?id={!Paintter__c.ParentId__c}&hid={!Paintter__c.Id}');
+}
+
+var otherApp = function(){
+    alert('this action is for S1 only.');
+}
+</script>
+</apex:page>

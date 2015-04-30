@@ -1,0 +1,78 @@
+<apex:page showheader="false" sidebar="false" docType="html-5.0"  standardStylesheets="false" controller="PaintterController" applyBodyTag="false" applyHtmlTag="false">
+<html>
+<head>
+    <meta name="viewport" content="width=1024, initial-scale=1.0, minimal-ui" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <apex:stylesheet value="{!URLFOR($Resource.Paintter, 'spectrum/spectrum.css')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.Paintter, 'sweetalert/sweet-alert.css')}"/>
+
+    <apex:stylesheet value="{!$Page.Paintter_Css}"/>
+</head>
+
+<body ontouchmove="event.preventDefault()">
+<div class="main">
+
+  <div class="toolbar">
+    <ul id="toolbarLeft">
+      <li id="memolySize">
+        <div id="size">Memoly size<br/> <span id="memoryValue"/>/500,000</div>
+        <div id="metter"><meter id="memolyMeter" max="500000" low="0" high="450000" optimum="0" value="0"></meter></div>
+      </li>               
+      <li id="palet" class="tool pen active">
+        <input type="text" name="togglePaletteOnly" id="togglePaletteOnly" style="display: none;" />
+        <div class="sp-replacer sp-light">
+          <div class="sp-preview">
+            <div class="sp-preview-inner" style="background-color: rgb(0, 0, 0);"></div>
+          </div>
+          <div class="sp-dd">▼</div>
+        </div>
+      </li>
+
+      <li id="eraser" class="icon pen"><i class="fa fa-eraser fa-3x"></i></li>
+
+      <li id="small" class="tool styleSelecter">S</li>
+      <li id="middle" class="tool styleSelecter active">M</li>
+      <li id="large" class="tool styleSelecter">L</li>
+
+      <li><i id="undoButton" class="tool historyButton fa fa-undo fa-3x"></i></li>
+      <li><i id="redoButton" class="tool historyButton fa fa-repeat fa-3x"></i></li>
+    </ul>
+
+    <ul id="toolbarRight">           
+      <li id="message">Processing..</li>
+      <li id="chatterButton" class="icon active"><i class="fa fa-weixin fa-3x"></i></li>
+      <li id="saveButton" class="icon active"><i class="fa fa-floppy-o fa-3x"></i></li>
+    </ul>
+  </div>
+
+  <div class="canvas" ontouchmove="event.preventDefault()">
+    <canvas id="myCanvas" />
+    <canvas id="myCanvas_bk" style="display:none"/>
+  </div>
+</div>
+</body>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type='text/javascript' src='/canvas/sdk/js/publisher.js'></script>
+
+<script src="{!URLFOR($Resource.paintter, 'spectrum/spectrum.js')}"></script>
+<script src="{!URLFOR($Resource.paintter, 'fastclick/fastclick.js')}"></script>
+<script src="{!URLFOR($Resource.paintter, 'sweetalert/sweet-alert.min.js')}"></script>
+
+<apex:include pageName="Paintter_Js"/>
+
+<apex:form >
+    <apex:actionFunction action="{!saveImage}" name="saveImageApex" rerender="_dummy" oncomplete="afterSave('save');">
+        <apex:param value="" assignTo="{!parentId}" name="pId"/>
+        <apex:param value="" assignTo="{!headerId}" name="hId"/>
+        <apex:param value="" assignTo="{!imageData}" name="imageData"/>
+    </apex:actionFunction> 
+    <apex:actionFunction action="{!postChatter}" name="postChatterApex" rerender="_dummy" oncomplete="afterSave('post');">
+        <apex:param value="" assignTo="{!parentId}" name="pId"/>
+        <apex:param value="" assignTo="{!imageData}" name="imageData"/>
+    </apex:actionFunction> 
+</apex:form>
+</html>
+</apex:page>
